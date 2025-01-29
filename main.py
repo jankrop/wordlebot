@@ -3,7 +3,7 @@ from utils import LetterHints, Spinner, print_word_with_hints, get_hints, color_
 import itertools
 
 
-HARD_MODE = False
+HARD_MODE = True
 
 
 def get_best_guess(words: list[str], answers: list[str]):
@@ -54,11 +54,29 @@ def main():
 
     hints = ()
 
+    green_letters = {}
+    yellow_letters = []
+
     for attempt in range(6):
         print('Thinking...')
 
-        if HARD_MODE:
-            words = answers  # In hard mode we only can use guess words that match previous hints
+        if HARD_MODE and attempt != 0:
+            new_words = []
+            for word in words:
+                valid_guess = True
+                for i, c in enumerate(word):
+                    if green_letters.get(i) and green_letters.get(i) != c:
+                        valid_guess = False
+                        break
+                for c in yellow_letters:
+                    if c not in word:
+                        valid_guess = False
+                        break
+                if valid_guess:
+                    new_words.append(word)
+
+            words = new_words
+
 
         if hints:
             best_guess = get_best_guess(words, answers)
@@ -80,6 +98,12 @@ def main():
         if result == 'q':
             break
         hints = tuple((int(x) for x in result if x.isdigit()))
+
+        for i, c in enumerate(best_guess):
+            if hints[i] == 2:
+                green_letters[i] = c
+            elif hints[i] == 1:
+                yellow_letters.append(c)
 
         answers = [a for a in answers if get_hints(best_guess, a) == hints]
 

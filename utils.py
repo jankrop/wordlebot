@@ -88,7 +88,7 @@ def get_hints(guess: str, correct: str) -> tuple[int, ...]:
             hints.append(LetterHints.GRAY)
         elif correct[i] == c:
             hints.append(LetterHints.GREEN)
-        elif guess[:i].count(c) > correct.count(c) - [x for j, x in enumerate(guess) if guess[j] == correct[j]].count(c):
+        elif guess[:i].count(c) >= correct.count(c) - [x for j, x in enumerate(guess) if guess[j] == correct[j]].count(c):
             hints.append(LetterHints.GRAY)  # Marks excess repetitions as gray
         else:
             hints.append(LetterHints.YELLOW)
