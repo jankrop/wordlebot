@@ -1,4 +1,4 @@
-from main import get_best_guess
+from __main__ import get_best_guess
 from utils import get_hints
 
 with open('words.txt', 'r') as f:

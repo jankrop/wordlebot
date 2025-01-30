@@ -74,24 +74,3 @@ def print_word_with_hints(text: str, hints: tuple[int, ...]):
         if i == len(text) - 1:
             color_print('\u258c', fg=color, end='')
 
-
-
-def get_hints(guess: str, correct: str) -> tuple[int, ...]:
-    """Functions that calculates hints for a guess"""
-    if len(guess) != len(correct):
-        raise ValueError(f'Length difference between guess and correct: "{guess}", "{correct}"')
-
-    hints = []
-
-    for i, c in enumerate(guess):
-        if c not in correct:
-            hints.append(LetterHints.GRAY)
-        elif correct[i] == c:
-            hints.append(LetterHints.GREEN)
-        elif guess[:i].count(c) >= correct.count(c) - [x for j, x in enumerate(guess) if guess[j] == correct[j]].count(c):
-            hints.append(LetterHints.GRAY)  # Marks excess repetitions as gray
-        else:
-            hints.append(LetterHints.YELLOW)
-
-    return tuple(hints)
-
